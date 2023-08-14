@@ -16,8 +16,11 @@
 ```
 
 ### 3. High level design
-
+![./etc.image/UML.png](./etc.image/UML.png)
+![./etc.image/1요주인물인식.png](./etc.image/1요주인물인식.png)
+![./etc.image/2관리자제어.png](./etc.image/2관리자제어.png)
 ### 4. Work breakdown sheet
+![./etc.image/캡처.JPG.jpg](./etc.image/캡처.JPG.jpg)
 
 ### Team: 떡잎마을 방범대
 
