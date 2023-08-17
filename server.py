@@ -3,6 +3,8 @@ author: 김정균
 sudo apt install libmariadb-dev
 sudo apt install mariadb-server mariadb-client # systemctl status mariadb.service 
 sudo apt install mosquitto
+
+port open : sudo ufw allow 9876/tcp
 """
 
 import socket
@@ -17,7 +19,7 @@ import json
 from queue import Queue
 
 
-ServerIP = '10.10.14.3'
+ServerIP = '192.168.100.75'
 Event = False
 
 
@@ -95,12 +97,12 @@ def run_streaming(Port, msg_queue):
                 msg_queue.put(message)
                 # client_socket.sendall(message)  # frame(한 장) byte로 전송
 
-                # cv2.imshow("RECEIVING VIDEO", frame)
-                # if cv2.waitKey(10) & 0xFF == ord('q'):
-                #     break
+                cv2.imshow("RECEIVING VIDEO", frame)
+                if cv2.waitKey(10) & 0xFF == ord('q'):
+                    break
             # End while
 
-            # cv2.destroyAllWindows()
+            cv2.destroyAllWindows()
             client_socket.close()
 
         # End if
@@ -109,7 +111,8 @@ def run_streaming(Port, msg_queue):
 
 
 def run_mqtt():
-    os.system('mosquitto -p 1888')
+    print('mqtt는 따로 실행할 것 mosquitto -p 1888')
+    # os.system('mosquitto -p 1888')
 # End def    
 
 
@@ -251,7 +254,7 @@ def main():
             password="user1",
             host="127.0.0.1",
             port=3306,
-            database="TB_DDUKNIP"
+            database="DB_DDUKNIP"
         )
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB Platform: {e}")
@@ -260,11 +263,12 @@ def main():
     # Get Cursor
     cur = conn.cursor()
 
-    run_mqtt()
-    t1 = threading.Thread(target=run_streaming, args=(9876, msg_queue, ), daemon=True)
+    
+    t1 = threading.Thread(target=run_streaming, args=(9876, msg_queue, ), daemon=True)  # sudo ufw allow 9876/tcp
     t2 = threading.Thread(target=send_streaming, args=(9888, msg_queue, ), daemon=True)
     t3 = threading.Thread(target=client_db_req, args=(9899, cur), daemon=True)
     t4 = threading.Thread(target=recv_from_field, args=(9777, cur, conn), daemon=True)  # GPS, 상황발생YN 받기
+    t5 = threading.Thread(target=run_mqtt, args=(), daemon=True)
     
     t1.start()
     print("run_streaming start")
@@ -274,11 +278,14 @@ def main():
     print("client_db_req start")
     t4.start()
     print("recv_from_field start")
+    t5.start()
+    
 
     t1.join()
     t2.join()
     t3.join()
     t4.join()
+    t5.join()
 
     conn.close()
 # End def
