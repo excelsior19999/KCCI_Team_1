@@ -25,6 +25,7 @@ public:
 private slots:
     void onOpenMapClicked();
     void onConnected();
+    void lineEditFont();
 
 private:
     Ui::MainWindow *ui;

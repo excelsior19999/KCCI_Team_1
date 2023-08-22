@@ -13,12 +13,14 @@ MainWindow::MainWindow(QWidget *parent)
     // Create a WebSocket connection to the server
     socket = new QWebSocket;
     connect(socket, &QWebSocket::connected, this, &MainWindow::onConnected);
-    socket->open(QUrl("ws://10.10.14.203:6000"));
+    socket->open(QUrl("ws://10.10.14.21:5000"));
 
     // Pass the socket to the label widget
     ui->label->setWebSocket(socket);
 
-    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::onOpenMapClicked);    
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::onOpenMapClicked);
+
+    lineEditFont();
 }
 
 MainWindow::~MainWindow()
@@ -40,3 +42,12 @@ void MainWindow::onConnected()
     qDebug() << "Connected to the server.";
     // You can perform any actions here upon successful connection
 }
+
+void MainWindow::lineEditFont()
+{
+    QFont font;
+    font.setPointSize(16);
+    font.setFamily("Palatino");
+    ui->lineEdit->setFont(font);
+}
+
