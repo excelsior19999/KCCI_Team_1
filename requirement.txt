@@ -1,5 +1,0 @@
-mariadb==1.1.7
-numpy==1.25.2
-opencv-python==4.8.0.76
-packaging==23.1
-paho-mqtt==1.6.1
