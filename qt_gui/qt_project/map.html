@@ -1,0 +1,21 @@
+<div id="googleMap" style="width: 100%;height: 700px;"></div>
+
+<script>
+   function myMap(){
+      var mapOptions = { 
+            center:new google.maps.LatLng(37.5423,126.8413),
+            zoom:18
+      };
+ 
+      var map = new google.maps.Map( 
+             document.getElementById("googleMap") 
+            , mapOptions );
+            // Create a marker and set its position
+      var marker = new google.maps.Marker({
+          position: mapOptions.center,
+          map: map,
+          title: 'My Location'
+      });
+   }
+</script> 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjXxhzjqNaZd6W0L65AMdHdgbiqwUfVbI&callback=myMap"></script>
